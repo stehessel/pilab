@@ -1,0 +1,8 @@
+---
+- name: Configure logrotate
+  ansible.builtin.template:
+    dest: /etc/logrotate.conf
+    mode: "0644"
+    src: logrotate.conf
+  tags:
+    - configuration

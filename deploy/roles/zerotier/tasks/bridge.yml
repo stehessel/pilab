@@ -1,0 +1,29 @@
+---
+- name: Get ZeroTier interface
+  ansible.builtin.shell:
+    cmd: "zerotier-cli listnetworks -j | jq .[].portDeviceName -r"
+  register: zerotier_interface
+
+- name: Configure bridge network
+  ansible.builtin.template:
+    dest: /etc/systemd/network/25-bridge-br0.network
+    mode: "0644"
+    src: 25-bridge-br0.network.j2
+
+- name: Configure bridge network device
+  ansible.builtin.template:
+    dest: /etc/systemd/network/br0.netdev
+    mode: "0644"
+    src: br0.netdev.j2
+
+- name: Configure bridge to ethernet
+  ansible.builtin.template:
+    dest: /etc/systemd/network/25-bridge-br0-en.network
+    mode: "0644"
+    src: 25-bridge-br0-en.network.j2
+
+- name: Configure bridge to ZeroTier network
+  ansible.builtin.template:
+    dest: /etc/systemd/network/25-bridge-br0-zt.network
+    mode: "0644"
+    src: 25-bridge-br0-zt.network.j2

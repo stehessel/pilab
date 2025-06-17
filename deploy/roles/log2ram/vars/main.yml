@@ -1,0 +1,4 @@
+---
+log2ram_deb_release_repo: "{{ ansible_facts['distribution_release'] }}"
+log2ram_download_base_url: http://packages.azlux.fr
+log2ram_gpg_url: https://azlux.fr/repo.gpg

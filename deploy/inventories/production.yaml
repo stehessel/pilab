@@ -1,0 +1,4 @@
+ungrouped:
+  hosts:
+    pi.stephan.sh:
+      ansible_user: stephan

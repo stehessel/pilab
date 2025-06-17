@@ -1,0 +1,9 @@
+{{ ansible_managed | comment }}
+
+[Match]
+Name={{ zerotier_bridge_name }}
+
+[Network]
+Address={{ zerotier_bridge_address }}
+Gateway={{ zerotier_bridge_gateway_address }}
+{{ zerotier_bridge_dns }}

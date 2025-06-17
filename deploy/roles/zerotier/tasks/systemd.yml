@@ -1,0 +1,35 @@
+---
+- name: Install systemd-resolved
+  ansible.builtin.package:
+    name: systemd-resolved
+    state: present
+    update_cache: yes
+
+- name: Remove non-systemd network stack
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - dhcpcd5
+    - fake-hwclock
+    - ifupdown
+    - isc-dhcp-client
+    - isc-dhcp-common
+    - openresolv
+
+- name: Set resolv.conf
+  ansible.builtin.file:
+    dest: /etc/resolv.conf
+    force: true
+    src: /run/systemd/resolve/resolv.conf
+    state: link
+
+- name: Enable systemd network services
+  ansible.builtin.service:
+    enabled: true
+    name: "{{ item }}"
+    state: started
+  loop:
+    - systemd-networkd
+    - systemd-resolved
+    - systemd-timesyncd

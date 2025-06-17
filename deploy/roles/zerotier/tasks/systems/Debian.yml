@@ -1,0 +1,23 @@
+- block:
+    - name: Fetch ZeroTier PGP key
+      ansible.builtin.uri:
+        url: "{{ zerotier_gpg_url }}"
+        return_content: true
+      register: zerotier_key
+      failed_when: zerotier_key is failed
+
+    - name: Add ZeroTier PGP key
+      ansible.builtin.shell:
+        cmd: "gpg --dearmor > /usr/share/keyrings/zerotier-archive-keyring.gpg"
+        creates: /usr/share/keyrings/zerotier-archive-keyring.gpg
+        stdin: "{{ zerotier_key.content }}"
+      when: zerotier_key is not skipped
+
+    - name: Add ZeroTier apt repository
+      ansible.builtin.apt_repository:
+        repo: |
+          deb [signed-by=/usr/share/keyrings/zerotier-archive-keyring.gpg]
+          {{ zerotier_download_base_url }}/debian/{{ zerotier_deb_release_repo }} {{ zerotier_deb_release_repo }} main
+        filename: zerotier
+      register: zerotier_repo
+  when: ansible_facts['distribution'] == 'Debian'

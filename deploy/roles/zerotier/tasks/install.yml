@@ -1,0 +1,27 @@
+---
+- ansible.builtin.include_tasks: "systems/{{ ansible_facts['distribution'] }}.yml"
+  tags:
+    - installation
+    - repositories
+
+- block:
+    - name: Install zerotier-one
+      ansible.builtin.package:
+        name: zerotier-one
+        state: present
+        update_cache: yes
+      register: zerotier_client
+
+    - name: Start zerotier-one service
+      ansible.builtin.systemd_service:
+        name: zerotier-one
+        state: started
+      when:
+        - zerotier_client is succeeded
+      notify:
+        - Enable zerotier-one
+  when:
+    - zerotier_repo is succeeded
+  tags:
+    - installation
+    - packages

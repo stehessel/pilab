@@ -1,0 +1,18 @@
+---
+- name: Deploy pilab
+  hosts: all
+  tasks:
+    - ansible.builtin.import_role:
+        name: common
+
+    - ansible.builtin.import_role:
+        name: log2ram
+
+    - ansible.builtin.import_role:
+        name: logrotate
+
+    - ansible.builtin.import_role:
+        name: needrestart
+
+    - ansible.builtin.import_role:
+        name: zerotier

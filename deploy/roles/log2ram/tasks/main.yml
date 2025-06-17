@@ -1,0 +1,36 @@
+---
+- ansible.builtin.include_tasks: "systems/{{ ansible_facts['distribution'] }}.yml"
+  tags:
+    - installation
+    - repositories
+
+- block:
+    - name: Install packages
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - log2ram
+        - rsync
+      tags:
+        - installation
+
+    - name: Start log2ram service
+      ansible.builtin.systemd_service:
+        name: log2ram
+        state: started
+      notify:
+        - Enable log2ram
+
+    - name: Configure log2ram
+      ansible.builtin.template:
+        dest: /etc/log2ram.conf
+        mode: "0644"
+        src: log2ram.conf
+      notify:
+        - Restart log2ram
+      tags:
+        - configuration
+  when:
+    - log2ram_repo is succeeded

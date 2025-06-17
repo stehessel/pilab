@@ -1,0 +1,14 @@
+---
+zerotier_bridge_address: 192.168.0.2/24
+zerotier_bridge_dns: |
+  DNS=1.1.1.1
+  DNS=1.0.0.1
+  DNS=2606:4700:4700::1111
+  DNS=2606:4700:4700::1001
+zerotier_bridge_gateway_address: 192.168.0.1
+zerotier_bridge_name: br0
+zerotier_deb_release_repo: "{{ ansible_facts['distribution_release'] }}"
+zerotier_download_base_url: https://download.zerotier.com
+zerotier_ethernet_name: eth0
+zerotier_gpg_url: https://download.zerotier.com/contact@zerotier.com.gpg
+zerotier_network_id: 93afae596332e2d3

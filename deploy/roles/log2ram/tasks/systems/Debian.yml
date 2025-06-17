@@ -1,0 +1,14 @@
+- block:
+    - name: Fetch log2ram PGP key
+      ansible.builtin.get_url:
+        url: "{{ log2ram_gpg_url }}"
+        dest: /usr/share/keyrings/log2ram-archive-keyring.gpg
+
+    - name: Add log2ram apt repository
+      ansible.builtin.apt_repository:
+        repo: |
+          deb [signed-by=/usr/share/keyrings/log2ram-archive-keyring.gpg]
+          {{ log2ram_download_base_url }}/debian/ {{ log2ram_deb_release_repo }} main
+        filename: log2ram
+      register: log2ram_repo
+  when: ansible_facts['distribution'] == 'Debian'

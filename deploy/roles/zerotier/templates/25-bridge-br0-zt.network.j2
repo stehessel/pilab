@@ -1,0 +1,7 @@
+{{ ansible_managed | comment }}
+
+[Match]
+Name={{ zerotier_interface.stdout }}
+
+[Network]
+Bridge={{ zerotier_bridge_name }}
