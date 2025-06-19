@@ -1,8 +1,8 @@
 ---
-- name: Install common packages
+- name: Install backup packages
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
   loop:
-    - jq
-    - neovim
+    - rclone
+    - restic

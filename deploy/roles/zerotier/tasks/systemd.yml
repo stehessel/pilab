@@ -3,7 +3,6 @@
   ansible.builtin.package:
     name: systemd-resolved
     state: present
-    update_cache: yes
 
 - name: Remove non-systemd network stack
   ansible.builtin.package:

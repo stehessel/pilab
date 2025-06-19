@@ -1,0 +1,15 @@
+---
+- name: Deploy pilab
+  hosts: all
+  tasks:
+    - ansible.builtin.include_role:
+        name: "{{ role }}"
+      loop:
+        - backup
+        - common
+        - log2ram
+        - logrotate
+        - needrestart
+        - zerotier
+      loop_control:
+        loop_var: role
