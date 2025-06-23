@@ -1,0 +1,55 @@
+#trashGuideUrl: https://github.com/BlackDark/fork-TRASH-Guides
+#recyclarrConfigUrl: https://github.com/BlackDark/fork-recyclarr-configs
+localCustomFormatsPath: /app/cfs
+localConfigTemplatesPath: /app/templates
+
+radarr:
+  ultra.cc:
+    api_key: !secret RADARR_API_KEY
+    base_url: https://stehessel.gandalf.usbx.me/radarr
+
+    custom_formats:
+      - trash_ids:
+          # Comment out the next line if you and all of your users' setups are fully DV compatible
+          - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL)
+
+        # HDR10+ Boost - Uncomment the next two lines if any of your devices DO support HDR10+
+        # - b17886cb4158d9fea189859409975758 # HDR10Plus Boost
+        # - 55a5b50cb416dea5a50c4955896217ab # DV HDR10+ Boost
+        assign_scores_to:
+          - name: Remux + WEB 2160p
+
+    include:
+      - template: radarr-custom-formats-remux-web-1080p
+      - template: radarr-custom-formats-remux-web-2160p
+      - template: radarr-quality-profile-remux-web-1080p
+      - template: radarr-quality-profile-remux-web-2160p
+
+    media_naming:
+      folder: default
+      movie:
+        rename: true
+        standard: standard
+
+    quality_definition:
+      type: movie
+
+    quality_profiles:
+      - name: Remux + WEB 2160p
+
+sonarr:
+  ultra.cc:
+    api_key: !secret SONARR_API_KEY
+    base_url: https://stehessel.gandalf.usbx.me/sonarr
+
+    media_naming:
+      episodes:
+        rename: true
+        anime: default
+        daily: default
+        standard: default
+      season: default
+      series: default
+
+    quality_definition:
+      type: series

@@ -1,0 +1,15 @@
+---
+- block:
+    - name: Configure configarr compose.yml
+      ansible.builtin.template:
+        dest: "{{ configarr_path }}"
+        mode: "0644"
+        src: compose.yml
+
+    - name: Configure configarr config.yml
+      ansible.builtin.template:
+        dest: "{{ configarr_path }}/config"
+        mode: "0644"
+        src: config.yml
+  tags:
+    - configuration
