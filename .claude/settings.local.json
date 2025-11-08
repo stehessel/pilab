@@ -7,7 +7,9 @@
       "Bash(git log:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Read(//Users/shesselm/homelab/pilab/**)",
+      "Bash(SKIP=prettier,yamllint git commit -m \"feat: enhance configarr with sonarr support and secrets management\")"
     ],
     "deny": [],
     "ask": []
