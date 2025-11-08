@@ -2,3 +2,4 @@ ungrouped:
   hosts:
     pi.stephan.sh:
       ansible_user: stephan
+      ansible_password: "{{ lookup('env', 'ANSIBLE_PASSWORD') }}"
