@@ -1,4 +1,5 @@
 ignore: |
+  deploy/roles/**/templates/
 extends: default
 rules:
   braces:
