@@ -11,5 +11,11 @@
         dest: "{{ configarr_path }}/config"
         mode: "0644"
         src: config.yml
+
+    - name: Configure configarr secrets.yml
+      ansible.builtin.template:
+        dest: "{{ configarr_path }}/config"
+        mode: "0644"
+        src: secrets.yml
   tags:
     - configuration

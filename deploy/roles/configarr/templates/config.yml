@@ -1,3 +1,5 @@
+{{ ansible_managed | comment }}
+
 #trashGuideUrl: https://github.com/BlackDark/fork-TRASH-Guides
 #recyclarrConfigUrl: https://github.com/BlackDark/fork-recyclarr-configs
 localCustomFormatsPath: /app/cfs
@@ -9,15 +11,18 @@ radarr:
     base_url: https://stehessel.gandalf.usbx.me/radarr
 
     custom_formats:
-      - trash_ids:
+      - assign_scores_to:
+          - name: Remux + WEB 2160p
+        trash_ids:
           # Comment out the next line if you and all of your users' setups are fully DV compatible
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL)
 
-        # HDR10+ Boost - Uncomment the next two lines if any of your devices DO support HDR10+
-        # - b17886cb4158d9fea189859409975758 # HDR10Plus Boost
-        # - 55a5b50cb416dea5a50c4955896217ab # DV HDR10+ Boost
-        assign_scores_to:
-          - name: Remux + WEB 2160p
+          # HDR10+ Boost - Uncomment the next two lines if any of your devices DO support HDR10+
+          # - b17886cb4158d9fea189859409975758 # HDR10Plus Boost
+          # - 55a5b50cb416dea5a50c4955896217ab # DV HDR10+ Boost
+
+    delete_unmanaged_custom_formats:
+      enabled: true
 
     include:
       - template: radarr-custom-formats-remux-web-1080p
@@ -41,6 +46,27 @@ sonarr:
   ultra.cc:
     api_key: !secret SONARR_API_KEY
     base_url: https://stehessel.gandalf.usbx.me/sonarr
+
+    custom_formats:
+      # HDR Formats
+      - assign_scores_to:
+          - name: WEB-2160p
+        trash_ids:
+          # Comment out the next line if you and all of your users' setups are fully DV compatible
+          - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL)
+
+          # HDR10+ Boost - Uncomment the next two lines if any of your devices DO support HDR10+
+          # - 0dad0a507451acddd754fe6dc3a7f5e7 # HDR10+ Boost
+          # - 385e9e8581d33133c3961bdcdeffb7b4 # DV HDR10+ Boost
+
+    delete_unmanaged_custom_formats:
+      enabled: true
+
+    include:
+      - template: sonarr-v4-custom-formats-web-1080p
+      - template: sonarr-v4-custom-formats-web-2160p
+      - template: sonarr-v4-quality-profile-web-1080p
+      - template: sonarr-v4-quality-profile-web-2160p
 
     media_naming:
       episodes:

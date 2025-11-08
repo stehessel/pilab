@@ -1,3 +1,5 @@
+{{ ansible_managed | comment }}
+
 services:
   configarr:
     image: ghcr.io/raydak-labs/configarr:latest
