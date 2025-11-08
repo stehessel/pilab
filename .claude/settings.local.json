@@ -9,7 +9,11 @@
       "Bash(git commit:*)",
       "Bash(git reset:*)",
       "Read(//Users/shesselm/homelab/pilab/**)",
-      "Bash(SKIP=prettier,yamllint git commit -m \"feat: enhance configarr with sonarr support and secrets management\")"
+      "Bash(SKIP=prettier,yamllint git commit -m \"feat: enhance configarr with sonarr support and secrets management\")",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:configarr.de)",
+      "WebFetch(domain:radarr.video)",
+      "WebFetch(domain:trash-guides.info)"
     ],
     "deny": [],
     "ask": []
