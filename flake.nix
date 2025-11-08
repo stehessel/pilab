@@ -40,6 +40,7 @@
           inherit
             (pkgs)
             ansible
+            doppler
             sshpass
             ;
         };
