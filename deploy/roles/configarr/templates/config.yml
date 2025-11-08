@@ -12,9 +12,9 @@ radarr:
 
     custom_formats:
       - assign_scores_to:
-          - name: Remux + WEB 2160p
+          - name: Remux + WEB (2160p preferred)
         trash_ids:
-          # Comment out the next line if you and all of your users' setups are fully DV compatible
+          # Block DV releases without HDR10 fallback to ensure compatibility
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL)
 
           # HDR10+ Boost - Uncomment the next two lines if any of your devices DO support HDR10+
@@ -40,7 +40,17 @@ radarr:
       type: movie
 
     quality_profiles:
-      - name: Remux + WEB 2160p
+      - name: Remux + WEB (2160p preferred)
+        upgrade:
+          allowed: true
+          until_quality: Remux-2160p
+        min_format_score: 0
+        quality_sort: top
+        qualities:
+          - name: Remux-2160p
+          - name: WEB 2160p
+          - name: Remux-1080p
+          - name: WEB 1080p
 
 sonarr:
   ultra.cc:
@@ -50,9 +60,9 @@ sonarr:
     custom_formats:
       # HDR Formats
       - assign_scores_to:
-          - name: WEB-2160p
+          - name: WEB (2160p preferred)
         trash_ids:
-          # Comment out the next line if you and all of your users' setups are fully DV compatible
+          # Block DV releases without HDR10 fallback to ensure compatibility
           - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL)
 
           # HDR10+ Boost - Uncomment the next two lines if any of your devices DO support HDR10+
@@ -79,3 +89,14 @@ sonarr:
 
     quality_definition:
       type: series
+
+    quality_profiles:
+      - name: WEB (2160p preferred)
+        upgrade:
+          allowed: true
+          until_quality: WEB 2160p
+        min_format_score: 0
+        quality_sort: top
+        qualities:
+          - name: WEB 2160p
+          - name: WEB 1080p
