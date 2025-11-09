@@ -6,3 +6,4 @@
   loop:
     - jq
     - neovim
+    - syncthing
