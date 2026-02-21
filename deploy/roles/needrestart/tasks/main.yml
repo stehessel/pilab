@@ -1,4 +1,10 @@
 ---
+- name: Ensure that the configuration directory exists
+  ansible.builtin.file:
+    mode: "0755"
+    path: /etc/needrestart/conf.d
+    state: directory
+
 - name: Configure needrestart
   ansible.builtin.template:
     dest: /etc/needrestart/conf.d/kernel.conf

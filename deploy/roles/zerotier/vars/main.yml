@@ -9,6 +9,6 @@ zerotier_bridge_gateway_address: 192.168.0.1
 zerotier_bridge_name: br0
 zerotier_deb_release_repo: "{{ ansible_facts['distribution_release'] }}"
 zerotier_download_base_url: https://download.zerotier.com
-zerotier_ethernet_name: eth0
+zerotier_ethernet_name: end0
 zerotier_gpg_url: https://download.zerotier.com/contact@zerotier.com.gpg
 zerotier_network_id: 93afae596332e2d3

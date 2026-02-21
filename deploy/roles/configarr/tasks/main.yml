@@ -1,5 +1,11 @@
 ---
 - block:
+    - name: Ensure that the application directory exists
+      ansible.builtin.file:
+        mode: "0755"
+        path: "{{ configarr_path }}"
+        state: directory
+
     - name: Configure configarr compose.yml
       ansible.builtin.template:
         dest: "{{ configarr_path }}"
