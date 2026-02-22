@@ -11,6 +11,7 @@
         - log2ram
         - logrotate
         - needrestart
+        - syncthing
         - zerotier
       loop_control:
         loop_var: role

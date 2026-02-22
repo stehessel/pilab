@@ -1,0 +1,26 @@
+- block:
+    - name: Fetch Syncthing PGP key
+      ansible.builtin.uri:
+        url: "{{ syncthing_gpg_url }}"
+        return_content: true
+      register: syncthing_key
+      failed_when: syncthing_key is failed
+
+    - name: Add syncthing PGP key
+      ansible.builtin.shell:
+        cmd: "gpg --dearmor > /usr/share/keyrings/syncthing-archive-keyring.gpg"
+        creates: /usr/share/keyrings/syncthing-archive-keyring.gpg
+        stdin: "{{ syncthing_key.content }}"
+      when: syncthing_key is not skipped
+
+    - name: Add syncthing apt repository
+      ansible.builtin.apt_repository:
+        repo: |
+          deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg]
+          {{ syncthing_download_base_url }} syncthing stable
+        filename: syncthing
+      register: syncthing_repo
+  when: ansible_facts['distribution'] == 'Debian'
+  environment:
+    LANG: en_US.UTF-8
+    LC_ALL: en_US.UTF-8
