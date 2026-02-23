@@ -1,0 +1,12 @@
+---
+- name: Enable kodi service
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+    enabled: true
+    name: kodi.service
+
+- name: Restart kodi service
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+    state: restarted
+    name: kodi.service

@@ -1,0 +1,50 @@
+---
+- name: Install build dependencies
+  ansible.builtin.package:
+    name: make
+    state: present
+
+- name: Check if kodi.service already installed
+  ansible.builtin.stat:
+    path: /usr/lib/systemd/system/kodi.service
+  register: kodi_service_installed
+
+- name: Clone kodi-standalone-service repository
+  ansible.builtin.git:
+    repo: "{{ kodi_standalone_repo_url }}"
+    dest: "{{ kodi_standalone_clone_dest }}"
+    version: master
+    depth: 1
+  when: not kodi_service_installed.stat.exists
+
+- name: Install kodi-standalone-service
+  ansible.builtin.command:
+    cmd: make install
+    chdir: "{{ kodi_standalone_clone_dest }}"
+    creates: /usr/lib/systemd/system/kodi.service
+  environment:
+    ARCH: arm
+  when: not kodi_service_installed.stat.exists
+
+- name: Create kodi system user
+  ansible.builtin.command:
+    cmd: systemd-sysusers
+  changed_when: false
+
+- name: Create systemd temporary files
+  ansible.builtin.command:
+    cmd: systemd-tmpfiles --create
+  changed_when: false
+
+- name: Set graphical boot target
+  ansible.builtin.systemd:
+    name: graphical.target
+    enabled: true
+  changed_when: false
+
+- name: Start kodi.service
+  ansible.builtin.systemd_service:
+    name: kodi.service
+    state: started
+  notify:
+    - Enable kodi service
