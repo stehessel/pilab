@@ -14,6 +14,6 @@
     state: present
   loop:
     - docker.io
-    - git
     - jq
     - neovim
+    - rclone

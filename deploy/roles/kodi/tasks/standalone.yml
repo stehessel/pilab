@@ -1,8 +1,11 @@
 ---
 - name: Install build dependencies
   ansible.builtin.package:
-    name: make
+    name: "{{ item }}"
     state: present
+  loop:
+    - git
+    - make
 
 - name: Check if kodi.service already installed
   ansible.builtin.stat:
