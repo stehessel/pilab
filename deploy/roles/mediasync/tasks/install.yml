@@ -1,0 +1,18 @@
+---
+- ansible.builtin.include_tasks: "systems/{{ ansible_facts['distribution'] }}.yml"
+  tags:
+    - installation
+    - repositories
+
+- name: Install packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - ntfy
+    - rclone
+  when:
+    - mediasync_ntfy_repo is succeeded
+  tags:
+    - installation
+    - packages

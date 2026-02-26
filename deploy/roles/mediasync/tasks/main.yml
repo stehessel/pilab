@@ -1,0 +1,88 @@
+---
+- name: Install ntfy
+  ansible.builtin.import_tasks: install.yml
+  tags:
+    - installation
+
+- name: Ensure rclone config directory exists
+  ansible.builtin.file:
+    path: "{{ mediasync_rclone_config_dir }}"
+    state: directory
+    owner: "{{ mediasync_user }}"
+    group: "{{ mediasync_user }}"
+    mode: "0700"
+  tags:
+    - configuration
+
+- name: Obscure FTP password for rclone config
+  ansible.builtin.command:
+    argv:
+      - rclone
+      - obscure
+      - "{{ lookup('ansible.builtin.env', 'MEDIASYNC_FTP_PASS') }}"
+  register: mediasync_rclone_obscured_pass
+  changed_when: false
+  no_log: true
+  tags:
+    - configuration
+
+- name: Template rclone config
+  ansible.builtin.template:
+    src: rclone.conf.j2
+    dest: "{{ mediasync_rclone_config_file }}"
+    owner: "{{ mediasync_user }}"
+    group: "{{ mediasync_user }}"
+    mode: "0600"
+  notify:
+    - Restart mediasync service
+  tags:
+    - configuration
+
+- name: Ensure mediasync script directory exists
+  ansible.builtin.file:
+    path: "{{ mediasync_script_path | dirname }}"
+    state: directory
+    owner: "{{ mediasync_user }}"
+    group: "{{ mediasync_user }}"
+    mode: "0755"
+  tags:
+    - configuration
+
+- name: Template mediasync sync script
+  ansible.builtin.template:
+    src: mediasync.sh.j2
+    dest: "{{ mediasync_script_path }}"
+    mode: "0755"
+  notify:
+    - Restart mediasync service
+  tags:
+    - configuration
+
+- name: Ensure local media path exists
+  ansible.builtin.file:
+    path: "{{ mediasync_local_path }}"
+    state: directory
+    owner: "{{ mediasync_user }}"
+    group: "{{ mediasync_user }}"
+    mode: "0755"
+  tags:
+    - configuration
+
+- name: Template mediasync systemd unit
+  ansible.builtin.template:
+    src: mediasync@.service.j2
+    dest: /etc/systemd/system/mediasync@.service
+    mode: "0644"
+  notify:
+    - Reload systemd daemon
+    - Restart mediasync service
+  tags:
+    - configuration
+
+- name: Enable and start mediasync service
+  ansible.builtin.systemd_service:
+    name: "mediasync@{{ mediasync_user }}.service"
+    enabled: true
+    state: started
+  tags:
+    - service

@@ -4,5 +4,4 @@
     name: "{{ item }}"
     state: present
   loop:
-    - rclone
     - restic

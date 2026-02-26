@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# {{ ansible_managed }}
+# Sync media from the configured rclone remote to the local path.
+# Uses flock to prevent concurrent syncs when multiple ntfy messages arrive rapidly.
+
+set -euo pipefail
+
+# Attempt a non-blocking exclusive lock so that only one sync runs at a time.
+exec 9>"{{ mediasync_lock_file }}"
+if ! flock --nonblock 9; then
+  logger --tag mediasync "Another sync is already running; skipping this trigger."
+  exit 0
+fi
+
+logger --tag mediasync "Starting sync: {{ mediasync_remote_name }}:{{ mediasync_remote_path }} -> {{ mediasync_local_path }}"
+
+# shellcheck disable=SC1083
+rclone sync \
+  --config "{{ mediasync_rclone_config_file }}" \
+  --progress \
+  {{ mediasync_rclone_extra_flags }} \
+  "{{ mediasync_remote_name }}:{{ mediasync_remote_path }}" \
+  "{{ mediasync_local_path }}"
+
+logger --tag mediasync "Sync completed successfully."

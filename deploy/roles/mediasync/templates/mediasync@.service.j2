@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+[Unit]
+Description=mediasync - ntfy-triggered rclone media sync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=%i
+ExecStart=/usr/bin/ntfy subscribe \
+    {{ mediasync_ntfy_host }}/{{ lookup("ansible.builtin.env", "MEDIASYNC_NTFY_TOPIC") }} \
+    {{ mediasync_script_path }}
+Restart=always
+RestartSec=10
+SyslogIdentifier=mediasync
+
+[Install]
+WantedBy=multi-user.target

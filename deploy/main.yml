@@ -11,6 +11,7 @@
         - kodi
         - log2ram
         - logrotate
+        - mediasync
         - needrestart
         - syncthing
         - zerotier

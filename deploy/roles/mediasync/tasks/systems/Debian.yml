@@ -1,0 +1,16 @@
+---
+- block:
+    - name: Fetch ntfy PGP key
+      ansible.builtin.get_url:
+        url: "{{ mediasync_ntfy_gpg_url }}"
+        dest: "{{ mediasync_ntfy_keyring_path }}"
+        mode: "0644"
+
+    - name: Add ntfy apt repository
+      ansible.builtin.apt_repository:
+        repo: |
+          deb [arch={{ mediasync_ntfy_apt_arch }} signed-by={{ mediasync_ntfy_keyring_path }}]
+          {{ mediasync_ntfy_repo_url }} stable main
+        filename: ntfy
+      register: mediasync_ntfy_repo
+  when: ansible_facts['distribution'] == 'Debian'

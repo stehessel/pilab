@@ -1,0 +1,12 @@
+{{ ansible_managed | comment }}
+
+[{{ mediasync_remote_name }}]
+type = ftp
+host = {{ lookup("ansible.builtin.env", "MEDIASYNC_FTP_HOST") }}
+user = {{ lookup("ansible.builtin.env", "MEDIASYNC_FTP_USER") }}
+port = {{ mediasync_ftp_port }}
+pass = {{ mediasync_rclone_obscured_pass.stdout }}
+tls = {{ mediasync_ftp_tls | lower }}
+explicit_tls = {{ mediasync_ftp_explicit_tls | lower }}
+no_check_certificate = {{ mediasync_ftp_no_check_certificate | lower }}
+concurrency = {{ mediasync_ftp_concurrency }}
