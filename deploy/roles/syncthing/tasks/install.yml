@@ -1,7 +1,7 @@
-# - ansible.builtin.include_tasks: "systems/{{ ansible_facts['distribution'] }}.yml"
-#   tags:
-#     - installation
-#     - repositories
+- ansible.builtin.include_tasks: "systems/{{ ansible_facts['distribution'] }}.yml"
+  tags:
+    - installation
+    - repositories
 #
 - block:
     - name: Install Syncthing
@@ -10,15 +10,13 @@
         state: present
       register: syncthing
 
-    - name: Start Syncthing service
+    - name: Start and enable Syncthing service
       ansible.builtin.systemd_service:
-        name: syncthing
-        scope: user
+        enabled: true
+        name: "syncthing@{{ syncthing_user }}.service"
         state: started
       when:
         - syncthing is succeeded
-      notify:
-        - Enable syncthing
   when:
     - syncthing_repo is succeeded
   tags:

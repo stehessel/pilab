@@ -1,3 +1,4 @@
 ---
 syncthing_download_base_url: https://apt.syncthing.net/
 syncthing_gpg_url: https://syncthing.net/release-key.gpg
+syncthing_user: stephan

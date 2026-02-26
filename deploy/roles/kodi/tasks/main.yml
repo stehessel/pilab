@@ -12,9 +12,9 @@
   # See https://github.com/graysky2/kodi-standalone-service/commit/807d1aada4621195d5b118ba6c43ff20568ea4e9.
 - name: Create kodi symlink
   ansible.builtin.file:
-    dest: /usr/bin/kodi
+    src: /usr/bin/kodi
     force: true
-    src: /usr/lib/kodi/kodi.bin
+    dest: /usr/lib/kodi/kodi.bin
     state: link
 
 - name: Install kodi standalone service

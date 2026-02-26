@@ -1,17 +1,10 @@
 - block:
     - name: Fetch Syncthing PGP key
-      ansible.builtin.uri:
+      ansible.builtin.get_url:
         url: "{{ syncthing_gpg_url }}"
-        return_content: true
+        dest: /usr/share/keyrings/syncthing-archive-keyring.gpg
+        mode: "0644"
       register: syncthing_key
-      failed_when: syncthing_key is failed
-
-    - name: Add syncthing PGP key
-      ansible.builtin.shell:
-        cmd: "gpg --dearmor > /usr/share/keyrings/syncthing-archive-keyring.gpg"
-        creates: /usr/share/keyrings/syncthing-archive-keyring.gpg
-        stdin: "{{ syncthing_key.content }}"
-      when: syncthing_key is not skipped
 
     - name: Add syncthing apt repository
       ansible.builtin.apt_repository:

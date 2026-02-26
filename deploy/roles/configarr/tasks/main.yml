@@ -1,10 +1,13 @@
 ---
 - block:
-    - name: Ensure that the application directory exists
+    - name: Ensure that the application directories exist
       ansible.builtin.file:
         mode: "0755"
-        path: "{{ configarr_path }}"
+        path: "{{ item }}"
         state: directory
+      loop:
+        - "{{ configarr_path }}"
+        - "{{ configarr_path }}/config"
 
     - name: Configure configarr compose.yml
       ansible.builtin.template:
@@ -12,16 +15,13 @@
         mode: "0644"
         src: compose.yml
 
-    - name: Configure configarr config.yml
+    - name: Configure configarr config files
       ansible.builtin.template:
-        dest: "{{ configarr_path }}/config"
+        dest: "{{ configarr_path }}/config/{{ item }}"
         mode: "0644"
-        src: config.yml
-
-    - name: Configure configarr secrets.yml
-      ansible.builtin.template:
-        dest: "{{ configarr_path }}/config"
-        mode: "0644"
-        src: secrets.yml
+        src: "{{ item }}"
+      loop:
+        - config.yml
+        - secrets.yml
   tags:
     - configuration

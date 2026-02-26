@@ -8,7 +8,7 @@
         - backup
         - common
         - configarr
-        # - kodi
+        - kodi
         - log2ram
         - logrotate
         - needrestart
