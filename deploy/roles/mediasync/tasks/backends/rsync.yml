@@ -1,0 +1,31 @@
+---
+- name: Install rsync
+  ansible.builtin.package:
+    name: rsync
+    state: present
+  when:
+    - mediasync_ntfy_repo is succeeded
+  tags:
+    - installation
+    - packages
+
+- name: Ensure .ssh directory exists for mediasync user
+  ansible.builtin.file:
+    path: "/home/{{ mediasync_user }}/.ssh"
+    state: directory
+    owner: "{{ mediasync_user }}"
+    group: "{{ mediasync_user }}"
+    mode: "0700"
+  tags:
+    - configuration
+
+- name: Write rsync SSH private key from Doppler
+  ansible.builtin.copy:
+    content: "{{ lookup('ansible.builtin.env', 'MEDIASYNC_RSYNC_SSH_KEY') | trim }}\n"
+    dest: "{{ mediasync_rsync_ssh_key_path }}"
+    owner: "{{ mediasync_user }}"
+    group: "{{ mediasync_user }}"
+    mode: "0600"
+  no_log: true
+  tags:
+    - configuration

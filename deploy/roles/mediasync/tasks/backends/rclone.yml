@@ -1,0 +1,44 @@
+---
+- name: Install rclone
+  ansible.builtin.package:
+    name: rclone
+    state: present
+  when:
+    - mediasync_ntfy_repo is succeeded
+  tags:
+    - installation
+    - packages
+
+- name: Ensure rclone config directory exists
+  ansible.builtin.file:
+    path: "{{ mediasync_rclone_config_dir }}"
+    state: directory
+    owner: "{{ mediasync_user }}"
+    group: "{{ mediasync_user }}"
+    mode: "0700"
+  tags:
+    - configuration
+
+- name: Obscure FTP password for rclone config
+  ansible.builtin.command:
+    argv:
+      - rclone
+      - obscure
+      - "{{ lookup('ansible.builtin.env', 'MEDIASYNC_FTP_PASS') }}"
+  register: mediasync_rclone_obscured_pass
+  changed_when: false
+  no_log: true
+  tags:
+    - configuration
+
+- name: Template rclone config
+  ansible.builtin.template:
+    src: rclone.conf.j2
+    dest: "{{ mediasync_rclone_config_file }}"
+    owner: "{{ mediasync_user }}"
+    group: "{{ mediasync_user }}"
+    mode: "0600"
+  notify:
+    - Restart mediasync service
+  tags:
+    - configuration

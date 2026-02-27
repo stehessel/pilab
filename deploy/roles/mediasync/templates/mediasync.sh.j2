@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # {{ ansible_managed }}
-# Sync media from the configured rclone remote to the local path.
+# Sync media from the configured remote to the local path.
 # Uses flock to prevent concurrent syncs when multiple ntfy messages arrive rapidly.
 
 set -euo pipefail
@@ -12,15 +12,37 @@ if ! flock --nonblock 9; then
   exit 0
 fi
 
-logger --tag mediasync "Starting sync: {{ mediasync_remote_name }}:{{ mediasync_remote_path }} -> {{ mediasync_local_path }}"
+logger --tag mediasync "Starting sync (backend: {{ mediasync_sync_backend }}): -> {{ mediasync_local_path }}"
 
-# shellcheck disable=SC1083
-rclone sync \
-  --config "{{ mediasync_rclone_config_file }}" \
-  --stats-one-line \
-  {{ mediasync_rclone_extra_flags }} \
-  "{{ mediasync_remote_name }}:{{ mediasync_remote_path }}" \
-  "{{ mediasync_local_path }}"
+# Sync using rclone from the configured FTP remote.
+do_sync_rclone() {
+  # shellcheck disable=SC1083
+  rclone sync \
+    --config "{{ mediasync_rclone_config_file }}" \
+    --stats-one-line \
+    {{ mediasync_rclone_extra_flags }} \
+    "{{ mediasync_remote_name }}:{{ mediasync_remote_path }}" \
+    "{{ mediasync_local_path }}"
+}
+
+# Sync using rsync over SSH from the configured remote host.
+do_sync_rsync() {
+  # shellcheck disable=SC1083
+  rsync \
+    -e "ssh -i {{ mediasync_rsync_ssh_key_path }}" \
+    {{ mediasync_rsync_extra_flags }} \
+    "{{ mediasync_rsync_user }}@{{ mediasync_rsync_host }}:{{ mediasync_rsync_remote_path }}/" \
+    "{{ mediasync_local_path }}/"
+}
+
+case "{{ mediasync_sync_backend }}" in
+rclone) do_sync_rclone ;;
+rsync) do_sync_rsync ;;
+*)
+  logger --tag mediasync "Unknown sync backend: {{ mediasync_sync_backend }}"
+  exit 1
+  ;;
+esac
 
 logger --tag mediasync "Sync completed successfully."
 

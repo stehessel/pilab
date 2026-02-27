@@ -10,7 +10,6 @@
     state: present
   loop:
     - ntfy
-    - rclone
   when:
     - mediasync_ntfy_repo is succeeded
   tags:
