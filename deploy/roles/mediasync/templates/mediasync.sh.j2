@@ -23,3 +23,12 @@ rclone sync \
   "{{ mediasync_local_path }}"
 
 logger --tag mediasync "Sync completed successfully."
+
+# Trigger a Kodi video library scan so newly synced media appears immediately.
+# UpdateLibrary(video) covers both movies and TV shows.
+kodi-send \
+  --host="{{ mediasync_kodi_host }}" \
+  --port="{{ mediasync_kodi_port }}" \
+  --action="UpdateLibrary(video)"
+
+logger --tag mediasync "Kodi video library update triggered."
