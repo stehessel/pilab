@@ -1,0 +1,4 @@
+{{ ansible_managed | comment }}
+
+# Media sync log abbreviation - follows the mediasync@{{ shell_user }} systemd service.
+abbr --add ml "journalctl -f -u mediasync@{{ shell_user }}"

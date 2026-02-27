@@ -13,3 +13,23 @@
     shell: /usr/bin/fish
   tags:
     - configuration
+
+- name: Ensure fish conf.d directory exists for {{ shell_user }}
+  ansible.builtin.file:
+    path: /home/{{ shell_user }}/.config/fish/conf.d
+    state: directory
+    owner: "{{ shell_user }}"
+    group: "{{ shell_user }}"
+    mode: "0755"
+  tags:
+    - configuration
+
+- name: Template fish shell aliases for {{ shell_user }}
+  ansible.builtin.template:
+    src: aliases.fish.j2
+    dest: /home/{{ shell_user }}/.config/fish/conf.d/aliases.fish
+    owner: "{{ shell_user }}"
+    group: "{{ shell_user }}"
+    mode: "0644"
+  tags:
+    - configuration
