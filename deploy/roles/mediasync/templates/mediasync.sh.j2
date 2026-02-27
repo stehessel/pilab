@@ -17,7 +17,7 @@ logger --tag mediasync "Starting sync: {{ mediasync_remote_name }}:{{ mediasync_
 # shellcheck disable=SC1083
 rclone sync \
   --config "{{ mediasync_rclone_config_file }}" \
-  --progress \
+  --stats-one-line \
   {{ mediasync_rclone_extra_flags }} \
   "{{ mediasync_remote_name }}:{{ mediasync_remote_path }}" \
   "{{ mediasync_local_path }}"
