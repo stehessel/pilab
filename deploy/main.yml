@@ -13,6 +13,7 @@
         - logrotate
         - mediasync
         - needrestart
+        - shell
         - syncthing
         - zerotier
       loop_control:

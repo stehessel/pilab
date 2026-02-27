@@ -1,0 +1,15 @@
+---
+- name: Install fish shell
+  ansible.builtin.package:
+    name: fish
+    state: present
+  tags:
+    - installation
+    - packages
+
+- name: Set fish as the default shell for {{ shell_user }}
+  ansible.builtin.user:
+    name: "{{ shell_user }}"
+    shell: /usr/bin/fish
+  tags:
+    - configuration
