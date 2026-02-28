@@ -30,7 +30,7 @@ mediasync_ftp_concurrency: 0
 mediasync_rsync_host: "{{ lookup('ansible.builtin.env', 'MEDIASYNC_RSYNC_HOST') }}"
 mediasync_rsync_user: "{{ lookup('ansible.builtin.env', 'MEDIASYNC_RSYNC_USER') }}"
 mediasync_rsync_remote_path: "data/media"
-mediasync_rsync_extra_flags: "--archive --compress --delete --info=name1,progress2 --no-inc-recursive"
+mediasync_rsync_extra_flags: "--archive --compress --delete --partial --info=name1,progress1,stats1 --no-inc-recursive"
 mediasync_rsync_ssh_key_path: "/home/{{ mediasync_user }}/.ssh/mediasync_rsync"
 
 # Sync backend to use: "rclone" (default) or "rsync".
