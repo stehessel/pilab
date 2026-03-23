@@ -57,6 +57,23 @@ radarr:
     delete_unmanaged_custom_formats:
       enabled: true
 
+    download_clients:
+      - name: "qBittorrent"
+        type: qbittorrent
+        enable: true
+        priority: 1
+        fields:
+          host: {{ qbittorrent_host }}
+          port: {{ qbittorrent_port }}
+          use_ssl: {{ qbittorrent_use_ssl }}
+          url_base: {{ qbittorrent_url_base }}
+          username: !secret QBITTORRENT_USERNAME
+          password: !secret QBITTORRENT_PASSWORD
+          movie_category: movies
+
+    root_folders:
+      - /data/media/movies
+
     media_naming:
       folder: default
       movie:
@@ -147,6 +164,23 @@ sonarr:
 
     delete_unmanaged_custom_formats:
       enabled: true
+
+    download_clients:
+      - name: "qBittorrent"
+        type: qbittorrent
+        enable: true
+        priority: 1
+        fields:
+          host: {{ qbittorrent_host }}
+          port: {{ qbittorrent_port }}
+          use_ssl: {{ qbittorrent_use_ssl }}
+          url_base: {{ qbittorrent_url_base }}
+          username: !secret QBITTORRENT_USERNAME
+          password: !secret QBITTORRENT_PASSWORD
+          tv_category: tv
+
+    root_folders:
+      - /data/media/tv
 
     media_naming:
       episodes:

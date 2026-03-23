@@ -1,3 +1,9 @@
 ---
 configarr_path: /home/stephan/apps/configarr
 configarr_time_zone: Europe/Berlin
+
+# qBittorrent connection settings.
+qbittorrent_host: stehessel.gandalf.usbx.me
+qbittorrent_port: 443
+qbittorrent_use_ssl: true
+qbittorrent_url_base: /qbittorrent
