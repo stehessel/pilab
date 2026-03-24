@@ -1,4 +1,4 @@
-- ansible.builtin.include_tasks: "systems/{{ ansible_facts['distribution'] }}.yml"
+- ansible.builtin.include_tasks: "systems/{{ ansible_facts['distribution'] }}.yaml"
   tags:
     - installation
     - repositories

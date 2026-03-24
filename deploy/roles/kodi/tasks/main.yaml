@@ -18,5 +18,5 @@
     state: link
 
 - name: Install kodi standalone service
-  ansible.builtin.import_tasks: standalone.yml
+  ansible.builtin.import_tasks: standalone.yaml
   when: kodi_install_standalone | default(true) | bool

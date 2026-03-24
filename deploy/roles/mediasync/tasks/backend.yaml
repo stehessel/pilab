@@ -2,9 +2,9 @@
 # Dispatch to the backend-specific task file based on mediasync_sync_backend.
 
 - name: Configure rclone backend
-  ansible.builtin.import_tasks: backends/rclone.yml
+  ansible.builtin.import_tasks: backends/rclone.yaml
   when: mediasync_sync_backend == 'rclone'
 
 - name: Configure rsync backend
-  ansible.builtin.import_tasks: backends/rsync.yml
+  ansible.builtin.import_tasks: backends/rsync.yaml
   when: mediasync_sync_backend == 'rsync'

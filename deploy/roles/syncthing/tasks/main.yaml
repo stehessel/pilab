@@ -1,5 +1,5 @@
 ---
 - name: Install Syncthing
-  ansible.builtin.import_tasks: install.yml
+  ansible.builtin.import_tasks: install.yaml
   when:
     - not skip_install | default(false) | bool

@@ -1,20 +1,20 @@
 ---
 - name: Install ZeroTier
-  ansible.builtin.import_tasks: install.yml
+  ansible.builtin.import_tasks: install.yaml
   when:
     - not skip_install | default(false) | bool
 
 - name: Join ZeroTier network
-  ansible.builtin.import_tasks: join-network.yml
+  ansible.builtin.import_tasks: join-network.yaml
   tags:
     - configuration
 
 - name: Setup ZeroTier systemd services
-  ansible.builtin.import_tasks: systemd.yml
+  ansible.builtin.import_tasks: systemd.yaml
   tags:
     - configuration
 
 - name: Setup ZeroTier bridge
-  ansible.builtin.import_tasks: bridge.yml
+  ansible.builtin.import_tasks: bridge.yaml
   tags:
     - configuration

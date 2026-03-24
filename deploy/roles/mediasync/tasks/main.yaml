@@ -1,11 +1,11 @@
 ---
 - name: Install ntfy
-  ansible.builtin.import_tasks: install.yml
+  ansible.builtin.import_tasks: install.yaml
   tags:
     - installation
 
 - name: Configure sync backend
-  ansible.builtin.import_tasks: backend.yml
+  ansible.builtin.import_tasks: backend.yaml
 
 - name: Ensure mediasync script directory exists
   ansible.builtin.file:
